@@ -23,10 +23,13 @@ productsRouter.get('/:id', async (req, res) => {
 
     const product = await ProductApi.getById(id);
 
-    if (!product) res.send({ error: ERRORS_UTILS.MESSAGES.NO_PRODUCT });
+    if (!product) {
+      throw { error: ERRORS_UTILS.MESSAGES.NO_PRODUCT };
+    }
 
     res.send(product);
   } catch (error) {
+    res.status(404);
     res.send(error);
   }
 });
@@ -48,7 +51,8 @@ productsRouter.post('/', isAdmin, async (req, res) => {
 
     res.send(productSaved);
   } catch (error) {
-    res.send(error);
+    res.status(400);
+    res.send({ error: 'Invalid Body' });
   }
 });
 
@@ -70,13 +74,18 @@ productsRouter.put('/:id', isAdmin, async (req, res) => {
 
     res.send(productUpdate);
   } catch (error) {
-    res.send(error);
+    res.status(400);
+    res.send({ error: 'Invalid Body' });
   }
 });
 
 productsRouter.delete('/:id', isAdmin, async (req, res) => {
   try {
     const { id } = req.params;
+    const product = await ProductApi.getById(id);
+    if (!product) {
+      throw { error: ERRORS_UTILS.MESSAGES.NO_PRODUCT };
+    }
     const productDelete = await ProductApi.deleteById(id);
 
     res.send({
@@ -84,6 +93,7 @@ productsRouter.delete('/:id', isAdmin, async (req, res) => {
       productoEliminado: productDelete,
     });
   } catch (error) {
+    res.status(404);
     res.send(error);
   }
 });

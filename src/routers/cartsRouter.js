@@ -18,13 +18,17 @@ cartsRouter.post('/', async (req, res) => {
     const cartId = cart.id;
     res.send({ id: cartId });
   } catch (error) {
-    res.send(error);
+    res.send({ error: error });
   }
 });
 
 cartsRouter.delete('/:id', async (req, res) => {
   try {
     const { id } = req.params;
+    const cart = await CartApi.getById(id);
+    if (!cart) {
+      throw { error: ERRORS_UTILS.MESSAGES.NO_CART };
+    }
 
     const carritoDelete = await CartApi.deleteById(id);
 
@@ -33,7 +37,8 @@ cartsRouter.delete('/:id', async (req, res) => {
       carritoEliminado: carritoDelete,
     });
   } catch (error) {
-    res.send(error);
+    res.status(404);
+    res.send({ error });
   }
 });
 
@@ -42,10 +47,13 @@ cartsRouter.get('/:id/productos', async (req, res) => {
     const { id } = req.params;
     const cart = await CartApi.getById(id);
 
-    if (!cart) res.send({ error: ERRORS_UTILS.MESSAGES.NO_CART });
+    if (!cart) {
+      throw { error: ERRORS_UTILS.MESSAGES.NO_CART };
+    }
 
     res.send(cart.products);
   } catch (error) {
+    res.status(404);
     res.send(error);
   }
 });
@@ -57,11 +65,15 @@ cartsRouter.post('/:id/productos', async (req, res) => {
 
     const cart = await CartApi.getById(id);
 
-    if (!cart) res.send({ error: ERRORS_UTILS.MESSAGES.NO_CART });
+    if (!cart) {
+      throw { error: ERRORS_UTILS.MESSAGES.NO_CART };
+    }
 
     const product = await ProductsApi.getById(productId);
 
-    if (!product) res.send({ error: ERRORS_UTILS.MESSAGES.NO_PRODUCT });
+    if (!product) {
+      throw { error: ERRORS_UTILS.MESSAGES.NO_PRODUCT };
+    }
 
     cart.products.push(product);
 
@@ -69,7 +81,8 @@ cartsRouter.post('/:id/productos', async (req, res) => {
 
     res.send(updatedCart);
   } catch (error) {
-    res.send(error);
+    res.status(404);
+    res.send({ error });
   }
 });
 
@@ -80,11 +93,15 @@ cartsRouter.delete('/:id/productos/:id_prod', async (req, res) => {
 
     let cart = await CartApi.getById(id);
 
-    if (!cart) res.send({ error: ERRORS_UTILS.MESSAGES.NO_CART });
+    if (!cart) {
+      throw { error: ERRORS_UTILS.MESSAGES.NO_CART };
+    }
 
     const product = cart.products.find((e) => e.id == id_prod);
 
-    if (!product) res.send({ error: ERRORS_UTILS.MESSAGES.NO_PRODUCT });
+    if (!product) {
+      throw { error: ERRORS_UTILS.MESSAGES.NO_PRODUCT };
+    }
 
     cart.products = cart.products.filter((e) => e.id != id_prod);
 
@@ -92,7 +109,8 @@ cartsRouter.delete('/:id/productos/:id_prod', async (req, res) => {
 
     res.send(updatedCart);
   } catch (error) {
-    res.send(error);
+    res.status(404);
+    res.send({ error });
   }
 });
 
