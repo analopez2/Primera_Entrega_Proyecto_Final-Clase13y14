@@ -74,4 +74,18 @@ productsRouter.put('/:id', isAdmin, async (req, res) => {
   }
 });
 
+productsRouter.delete('/:id', isAdmin, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const productDelete = await ProductApi.deleteById(id);
+
+    res.send({
+      mensaje: 'Producto eliminado',
+      productoEliminado: productDelete,
+    });
+  } catch (error) {
+    res.send(error);
+  }
+});
+
 export { productsRouter };

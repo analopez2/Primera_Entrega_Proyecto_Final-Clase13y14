@@ -52,6 +52,8 @@ class FilesystemContainer {
 
       if (elementIndex === -1) return { error: 'Elemento no encontrado' };
 
+      newData.timestamp = DATE_UTILS.getTimestamp();
+
       elements[elementIndex] = { ...elements[elementIndex], ...newData };
 
       await fs.promises.writeFile(this.path, JSON.stringify(elements, null, 3));
@@ -77,7 +79,7 @@ class FilesystemContainer {
         JSON.stringify(newElements, null, 3)
       );
 
-      return elements;
+      return elements[elementIndex];
     } catch (error) {
       return elements;
     }

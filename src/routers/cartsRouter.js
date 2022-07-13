@@ -22,6 +22,34 @@ cartsRouter.post('/', async (req, res) => {
   }
 });
 
+cartsRouter.delete('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const carritoDelete = await CartApi.deleteById(id);
+
+    res.send({
+      mensaje: 'Carrito eliminado',
+      carritoEliminado: carritoDelete,
+    });
+  } catch (error) {
+    res.send(error);
+  }
+});
+
+cartsRouter.get('/:id/productos', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const cart = await CartApi.getById(id);
+
+    if (!cart) res.send({ error: ERRORS_UTILS.MESSAGES.NO_CART });
+
+    res.send(cart.products);
+  } catch (error) {
+    res.send(error);
+  }
+});
+
 cartsRouter.post('/:id/productos', async (req, res) => {
   try {
     const { id } = req.params;
@@ -45,14 +73,24 @@ cartsRouter.post('/:id/productos', async (req, res) => {
   }
 });
 
-cartsRouter.get('/:id', async (req, res) => {
+cartsRouter.delete('/:id/productos/:id_prod', async (req, res) => {
   try {
     const { id } = req.params;
-    const cart = await CartApi.getById(id);
+    const { id_prod } = req.params;
+
+    let cart = await CartApi.getById(id);
 
     if (!cart) res.send({ error: ERRORS_UTILS.MESSAGES.NO_CART });
 
-    res.send(cart);
+    const product = cart.products.find((e) => e.id == id_prod);
+
+    if (!product) res.send({ error: ERRORS_UTILS.MESSAGES.NO_PRODUCT });
+
+    cart.products = cart.products.filter((e) => e.id != id_prod);
+
+    const updatedCart = await CartApi.updateById(id, cart);
+
+    res.send(updatedCart);
   } catch (error) {
     res.send(error);
   }

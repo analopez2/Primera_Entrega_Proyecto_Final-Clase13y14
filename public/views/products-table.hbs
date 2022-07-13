@@ -1,24 +1,27 @@
 <div class="container m-5">
     <div class="mt-5">
         <div class="table-responsive mt- rounded-lg">
-            <h4 class="text-danger">Vista de Productos:</h4>
             {{#if products.length}}
             <table class="table table-dark rounded-lg">
                 <thead>
                     <tr>
-                        <th>Nombre</th>
-                        <th>Precio</th>
-                        <th>Stock</th>
-                        <th>Foto</th>
+                        <th class="text-center">Producto</th>
+                        <th class="text-center">Precio</th>
+                        <th class="text-center">Stock</th>
+                        <th class="text-center">Imagen</th>
+                        <th class="text-center">Mas</th>
                     </tr>
                 </thead>
                 <tbody>
                     {{#each products }}
                     <tr>
-                        <td>{{this.nombre}}</td>
-                        <td>${{this.precio}}</td>
-                        <td>{{this.stock}}</td>
-                        <td><img width="48" src={{this.foto}} alt="image"></td>
+                        <td class="text-center">{{this.nombre}}</td>
+                        <td class="text-center">${{this.precio}}</td>
+                        <td class="text-center">{{this.stock}}</td>
+                        <td class="text-center"><img width="200" src={{this.foto}} alt="image"></td>
+                        <td class="text-center align-middle">
+                            <a href="/api/productos/{{this.id}}"><img width="40" src="https://cdn-icons.flaticon.com/png/128/4556/premium/4556918.png?token=exp=1657682762~hmac=c1befe33dec2bbdf5686ecdb03e8f86f" alt="image"></a>
+                        </td>
                     </tr>
                     {{/each}}
                 </tbody>
