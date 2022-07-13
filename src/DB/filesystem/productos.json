@@ -48,5 +48,15 @@
       "stock": 2,
       "id": 5,
       "timestamp": "10/7/2022 22:05:03"
+   },
+   {
+      "nombre": "Iphone 11 64GB Black",
+      "descripcion": "Sistema de dos cámaras de 12 MP: ultra gran angular y gran angular",
+      "codigo": "MHDA3LZ/A",
+      "foto": "https://cdn.shopify.com/s/files/1/0565/6300/7603/products/iPhone11_Black_740x.jpg?v=1657299919",
+      "precio": 899,
+      "stock": 15,
+      "id": 6,
+      "timestamp": "13/7/2022 1:13:44"
    }
 ]
