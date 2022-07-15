@@ -13,7 +13,7 @@ productsRouter.get('/', async (req, res) => {
     const products = await ProductApi.getAll();
     res.send(products);
   } catch (error) {
-    res.send(error);
+    res.statusCode(404).send({ error: error });
   }
 });
 
@@ -29,8 +29,7 @@ productsRouter.get('/:id', async (req, res) => {
 
     res.send(product);
   } catch (error) {
-    res.status(404);
-    res.send(error);
+    res.statusCode(400).send({ error: error });
   }
 });
 
@@ -51,8 +50,7 @@ productsRouter.post('/', isAdmin, async (req, res) => {
 
     res.send(productSaved);
   } catch (error) {
-    res.status(400);
-    res.send({ error: 'Invalid Body' });
+    res.statusCode(400).send({ error: error });
   }
 });
 
@@ -74,8 +72,7 @@ productsRouter.put('/:id', isAdmin, async (req, res) => {
 
     res.send(productUpdate);
   } catch (error) {
-    res.status(400);
-    res.send({ error: 'Invalid Body' });
+    res.statusCode(400).send({ error: error });
   }
 });
 
@@ -93,8 +90,7 @@ productsRouter.delete('/:id', isAdmin, async (req, res) => {
       productoEliminado: productDelete,
     });
   } catch (error) {
-    res.status(404);
-    res.send(error);
+    res.statusCode(404).send({ error: error });
   }
 });
 

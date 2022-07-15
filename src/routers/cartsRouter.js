@@ -18,7 +18,7 @@ cartsRouter.post('/', async (req, res) => {
     const cartId = cart.id;
     res.send({ id: cartId });
   } catch (error) {
-    res.send({ error: error });
+    res.statusCode(400).send({ error: error });
   }
 });
 
@@ -37,8 +37,7 @@ cartsRouter.delete('/:id', async (req, res) => {
       carritoEliminado: carritoDelete,
     });
   } catch (error) {
-    res.status(404);
-    res.send({ error });
+    res.statusCode(404).send({ error: error });
   }
 });
 
@@ -53,8 +52,7 @@ cartsRouter.get('/:id/productos', async (req, res) => {
 
     res.send(cart.products);
   } catch (error) {
-    res.status(404);
-    res.send(error);
+    res.statusCode(404).send({ error: error });
   }
 });
 
@@ -109,8 +107,7 @@ cartsRouter.delete('/:id/productos/:id_prod', async (req, res) => {
 
     res.send(updatedCart);
   } catch (error) {
-    res.status(404);
-    res.send({ error });
+    res.statusCode(404).send({ error: error });
   }
 });
 
